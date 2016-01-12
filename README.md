@@ -6,8 +6,11 @@ A [Sketch](http://bohemiancoding.com/sketch) plugin to copy the fill, border, or
 clone the repository and open `CopyColorAsHsla.sketchplugin`.
 
 ## Usage
-* Select a layer
-* Select `Copy Color as HSLA > Copy Fill Color as HSLA` from the Plugins menu or press `^ ⇪ f`
+With a layer selected:
+
+* Select `Copy Color as HSLA > Copy Fill Color as HSLA` from the Plugins menu or press `^ ⇪ f` to copy the fill color.
+* Select `Copy Color as HSLA > Copy Border Color as HSLA` from the Plugins menu or press `^ ⇪ b` to copy the border color.
+* Select `Copy Color as HSLA > Copy Border Color as HSLA` from the Plugins menu or press `^ ⇪ t` to copy the text color.
 
 ## License
 MIT
