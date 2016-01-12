@@ -1,5 +1,5 @@
 # Copy Color as HSLA Sketch Plugin
-A [Sketch](http://bohemiancoding.com/sketch) plugin to copy the fill, border, or text color of a selected layer to the clipboard as HSLA (e.g., `hsla(59,66%,21%,0.42)`)
+A [Sketch](http://bohemiancoding.com/sketch) plugin to copy the fill, border, or text color of a selected layer to the clipboard as HSLA (e.g., `hsla(211, 66%, 21%, 0.42)`)
 
 ## Install
 You can start using the Copy Color as HSLA plugin in one of two ways:
