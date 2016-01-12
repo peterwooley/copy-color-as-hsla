@@ -86,28 +86,49 @@ var colorToHsla = function(color) {
   }
 };
 
-// http://codepen.io/pankajparashar/pen/oFzIg
+/*
+* https://gmigdos.wordpress.com/2011/01/13/javascript-convert-rgb-values-to-hsl/
+* Converts an RGB color to HSL
+* Result : 3-element array containing the HSL values
+*/
 function rgbaToHsla(r, g, b, a){
-    r /= 255, g /= 255, b /= 255;
-    var max = Math.max(r, g, b), min = Math.min(r, g, b);
-    var h, s, l = (max + min) / 2;
-
-    if (max == min) { h = s = 0; } 
-    else {
-      var d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-      switch (max){
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
-      }
-      
-      h /= 6;
+    var r1 = r / 255;
+    var g1 = g / 255;
+    var b1 = b / 255;
+ 
+    var maxColor = Math.max(r1,g1,b1);
+    var minColor = Math.min(r1,g1,b1);
+    //Calculate L:
+    var L = (maxColor + minColor) / 2 ;
+    var S = 0;
+    var H = 0;
+    if(maxColor != minColor){
+        //Calculate S:
+        if(L < 0.5){
+            S = (maxColor - minColor) / (maxColor + minColor);
+        }else{
+            S = (maxColor - minColor) / (2.0 - maxColor - minColor);
+        }
+        //Calculate H:
+        if(r1 == maxColor){
+            H = (g1-b1) / (maxColor - minColor);
+        }else if(g1 == maxColor){
+            H = 2.0 + (b1 - r1) / (maxColor - minColor);
+        }else{
+            H = 4.0 + (r1 - g1) / (maxColor - minColor);
+        }
     }
-    
-    return [(h*100+0.5)|0, ((s*100+0.5)|0) + '%', ((l*100+0.5)|0) + '%', a];
-  }
+ 
+    L = Math.round(L * 100) + "%";
+    S = Math.round(S * 100) + "%";
+    H = H * 60;
+    if(H<0){
+        H += 360;
+    }
+    H = Math.round(H);
+    var result = [H, S, L, a];
+    return result;
+}
 
 // Using JSTalk clipboard handling snippet from https://gist.github.com/uhunkler/5465857 by Urs Hunkler
 var clipboard = {
