@@ -1,16 +1,13 @@
-# Colorpeek Sketch Plugin
-A [Sketch](http://bohemiancoding.com/sketch) plugin to open the selected layer's colors in [Colorpeek](http://colorpeek.com) to be shared with others.
+# Copy Color as HSLA Sketch Plugin
+A [Sketch](http://bohemiancoding.com/sketch) plugin to copy the fill, border, or text color of a selected layer to the clipboard as HSLA (e.g., `hsla(59,66%,21%,0.42)`)
 
 ## Install
-[Download](https://github.com/peterwooley/colorpeek-sketch-plugin/archive/master.zip) or
-clone the repository and open `ShowInColorpeek.sketchplugin`.
+[Download](https://github.com/peterwooley/copy-color-as-hsla/archive/master.zip) or
+clone the repository and open `CopyColorAsHsla.sketchplugin`.
 
 ## Usage
 * Select a layer
-* Select `Colorpeek > Open Selected Layer Colors in Colorpeek` from the Plugins menu or press `^ ⇪ c`
-
-## Thanks
-  * Thanks to [Freakland's Sketch Browser Preview](https://github.com/Freakland/sketch-browser-preview) plugin for demonstrating how to open a URL in browser form a Sketch Plugin.
+* Select `Copy Color as HSLA > Copy Fill Color as HSLA` from the Plugins menu or press `^ ⇪ f`
 
 ## License
 MIT
