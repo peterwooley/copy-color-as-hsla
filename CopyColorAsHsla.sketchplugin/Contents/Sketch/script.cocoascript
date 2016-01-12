@@ -6,8 +6,6 @@ var copyFillColor = function(context) {
       layer,
       color;
 
-  layers = gatherSelectedLayers(selection);
-  
   if(!selection.count()) {
     doc.showMessage("Select a layer to copy its fill color as HSLA.");
     return false;
@@ -21,44 +19,71 @@ var copyFillColor = function(context) {
     }
   }
 
-  copyColorAsHslaToClipboard(color);
+  copyColorAsHslaToClipboard(color, doc, "fill");
 };
 
-var gatherColors = function(layers) {
-  var colors = [];
 
-  for(var i = 0; i < layers.length; i++) {
-    layer = layers[i];
-    switch ([layer class]) {
-      case MSTextLayer:
-        colors.push(toRgba(layer.textColor()));
-      default:
-        if(layer.style) {
-          if (layer.style().fills().count() > 0) {
-            colors.push(toRgba(layer.style().fills().firstObject().color()));
-          }
-          if (layer.style().borders().count() > 0) {
-            colors.push(toRgba(layer.style().borders().firstObject().color()));
-          }
-        }
-        break;
+var copyBorderColor = function(context) {
+  var selection = context.selection,
+      doc = context.document,
+      layer,
+      color;
+
+  if(!selection.count()) {
+    doc.showMessage("Select a layer to copy its border color as HSLA.");
+    return false;
+  }
+
+  layer = selection[0];
+
+  if(layer.style) {
+    if (layer.style().borders().count() > 0) {
+      color = layer.style().borders().firstObject().color();
     }
   }
 
-  return colors;
-}
+  copyColorAsHslaToClipboard(color, doc, "border");
+};
 
-var copyColorAsHslaToClipboard = function(color) {
+
+var copyTextColor = function(context) {
+  var selection = context.selection,
+      doc = context.document,
+      layer,
+      color;
+
+  if(!selection.count()) {
+    doc.showMessage("Select a layer to copy its text color as HSLA.");
+    return false;
+  }
+
+  layer = selection[0];
+
+  if(layer.style) {
+    if ([layer class] === MSTextLayer) {
+      color = layer.textColor();
+    }
+  }
+
+  copyColorAsHslaToClipboard(color, doc, "text");
+};
+
+var copyColorAsHslaToClipboard = function(color, doc, type) {
   var hsla = colorToHsla(color);
-  var text = "hsla("+hsla[0]+","+hsla[1]+","+hsla[2]+","+hsla[3]+")";
-  clipboard.set(text);
-  doc.showMessage("Copied " + text + " to clipboard.");
+  clipboard.set(hsla);
+  doc.showMessage("Copied " + type + " color " + hsla + " to clipboard.");
 }
 
 // https://github.com/getflourish/Sketch-Style-Inventory/search?utf8=✓&q=rgb&type=Code
 var colorToHsla = function(color) {
   log(color);
-  return rgbaToHsla(String(Math.ceil(color.red().toFixed(2) * 255)), String(Math.ceil(color.green().toFixed(2) * 255)), String(Math.ceil(color.blue().toFixed(2) * 255)), String(color.alpha().toFixed(2)));
+  var hsla = rgbaToHsla(String(Math.ceil(color.red().toFixed(2) * 255)), String(Math.ceil(color.green().toFixed(2) * 255)), String(Math.ceil(color.blue().toFixed(2) * 255)), String(color.alpha().toFixed(2)));
+  
+  if(hsla[3] == "1.00") {
+    return "hsl("+hsla[0]+","+hsla[1]+","+hsla[2]+")";
+  } else {
+    return "hsla("+hsla[0]+","+hsla[1]+","+hsla[2]+","+hsla[3]+")";
+  }
 };
 
 // http://codepen.io/pankajparashar/pen/oFzIg
