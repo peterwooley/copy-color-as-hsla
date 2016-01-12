@@ -1,0 +1,39 @@
+{
+  "author" : "Peter Wooley",
+  "commands" : [
+    {
+      "script" : "script.cocoascript",
+      "handler" : "copyFillColor",
+      "shortcut" : "shift control f",
+      "name" : "Copy Fill Color as HSLA",
+      "identifier" : "copy-fill-color-as-hsla"
+    },
+    {
+      "script" : "script.cocoascript",
+      "handler" : "copyBorderColor",
+      "shortcut" : "shift control b",
+      "name" : "Copy Border Color as HSLA",
+      "identifier" : "copy-border-color-as-hsla"
+    },
+    {
+      "script" : "script.cocoascript",
+      "handler" : "copyTextColor",
+      "shortcut" : "shift control t",
+      "name" : "Copy Text Color as HSLA",
+      "identifier" : "copy-text-color-as-hsla"
+    }
+  ],
+  "menu" : {
+    "items" : [
+      "copy-fill-color-as-hsla",
+      "copy-border-color-as-hsla",
+      "copy-text-color-as-hsla"
+    ],
+    "title" : "Copy Color as HSLA"
+  },
+  "identifier" : "com.peterwooley.sketch.copy-color-as-hsla",
+  "version" : "1.0",
+  "description" : "Copies fill, border, or text color to the clipboard as HSLA",
+  "authorEmail" : "peterwooley@gmail.com",
+  "name" : "Copy Color as HSLA"
+}

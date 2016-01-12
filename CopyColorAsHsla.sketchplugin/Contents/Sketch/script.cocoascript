@@ -1,0 +1,120 @@
+// Copy Color as HSLA
+
+var copyFillColor = function(context) {
+  var selection = context.selection,
+      doc = context.document,
+      layer,
+      color;
+
+  layers = gatherSelectedLayers(selection);
+  
+  if(!selection.count()) {
+    doc.showMessage("Select a layer to copy its fill color as HSLA.");
+    return false;
+  }
+
+  layer = selection[0];
+
+  if(layer.style) {
+    if (layer.style().fills().count() > 0) {
+      color = layer.style().fills().firstObject().color();
+    }
+  }
+
+  copyColorAsHslaToClipboard(color);
+};
+
+var gatherColors = function(layers) {
+  var colors = [];
+
+  for(var i = 0; i < layers.length; i++) {
+    layer = layers[i];
+    switch ([layer class]) {
+      case MSTextLayer:
+        colors.push(toRgba(layer.textColor()));
+      default:
+        if(layer.style) {
+          if (layer.style().fills().count() > 0) {
+            colors.push(toRgba(layer.style().fills().firstObject().color()));
+          }
+          if (layer.style().borders().count() > 0) {
+            colors.push(toRgba(layer.style().borders().firstObject().color()));
+          }
+        }
+        break;
+    }
+  }
+
+  return colors;
+}
+
+var copyColorAsHslaToClipboard = function(color) {
+  var hsla = colorToHsla(color);
+  var text = "hsla("+hsla[0]+","+hsla[1]+","+hsla[2]+","+hsla[3]+")";
+  clipboard.set(text);
+  doc.showMessage("Copied " + text + " to clipboard.");
+}
+
+// https://github.com/getflourish/Sketch-Style-Inventory/search?utf8=✓&q=rgb&type=Code
+var colorToHsla = function(color) {
+  log(color);
+  return rgbaToHsla(String(Math.ceil(color.red().toFixed(2) * 255)), String(Math.ceil(color.green().toFixed(2) * 255)), String(Math.ceil(color.blue().toFixed(2) * 255)), String(color.alpha().toFixed(2)));
+};
+
+// http://codepen.io/pankajparashar/pen/oFzIg
+function rgbaToHsla(r, g, b, a){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max == min) { h = s = 0; } 
+    else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max){
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      
+      h /= 6;
+    }
+    
+    return [(h*100+0.5)|0, ((s*100+0.5)|0) + '%', ((l*100+0.5)|0) + '%', a];
+  }
+
+// Using JSTalk clipboard handling snippet from https://gist.github.com/uhunkler/5465857 by Urs Hunkler
+var clipboard = {
+  // store the pasetboard object
+  pasteBoard : null,
+ 
+  // save the pasteboard object
+  init : function()
+  {
+    this.pasteBoard = NSPasteboard.generalPasteboard();
+  },
+  // set the clipboard to the given text
+  set : function( text )
+  {
+    if( typeof text === 'undefined' ) return null;
+ 
+    if( !this.pasteBoard )
+      this.init();
+ 
+    this.pasteBoard.declareTypes_owner( [ NSPasteboardTypeString ], null );
+    this.pasteBoard.setString_forType( text, NSPasteboardTypeString );
+ 
+    return true;
+  },
+  // get text from the clipbaoard
+  get : function()
+  {
+    if( !this.pasteBoard )
+      this.init();
+ 
+    var text = this.pasteBoard.stringForType( NSPasteboardTypeString );
+    
+    return text.toString();
+  }
+};
